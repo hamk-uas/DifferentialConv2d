@@ -1,10 +1,12 @@
 # DiffConv2d
 
-This is the code repository for the following paper: 
+This is forked from the code repository for the following paper: 
 ```
 K. Leng and J. Thiyagalingam, Padding-free Convolution based on
 Preservation of Differential Characteristics of Kernels.
 ```
+
+This repository attempts to create an equivalent algorithm formulated as padding.
 
 ## Installation
 
