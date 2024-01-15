@@ -14,10 +14,10 @@ def padding_coefs(N, s):
   y = x**(N-1) # Data, a polynomial
   A = hankel(y[0:N], y[N-1:N*2-1])  # Matrix of inputs to the prediction
   b = y[-N:]  # Prediction target vector
-  c = mp.lu_solve(A, b)
-  if np.max(c) > 9007199254740992.0 or np.min(c) < -9007199254740992.0:
+  c = mp.lu_solve(A, b)  # Least squares solve prediction coefficients
+  if np.max(c) > 9007199254740992.0 or np.min(c) < -9007199254740992.0:  # See https://stackoverflow.com/a/1848953/4770915
     print ("Warning: Too large coefficient for datatype double")
-  return c.apply(mp.nint)  # Least squares solve prediction coefficients
+  return c.apply(mp.nint)  # Round to integer
 
 M = 9 # Maximum kernel size
 
