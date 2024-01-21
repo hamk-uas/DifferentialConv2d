@@ -1,12 +1,10 @@
-# DiffConv2d
+# DiffConv2d 
 
-This is forked from the code repository for the following paper: 
+This is forked from the original code repository for the following paper: 
 ```
 K. Leng and J. Thiyagalingam, Padding-free Convolution based on
 Preservation of Differential Characteristics of Kernels.
 ```
-
-This repository attempts to create an equivalent algorithm formulated as padding.
 
 ## Installation
 
@@ -122,8 +120,9 @@ including data downloading, training and plotting.
 
 ## Acknowledgement
 
-This work is supported by the EPSRC grant, Blueprinting for AI for Science
-at Exascale (BASE-II, EP/X019918/1), which is Phase II of the Benchmarking
-for AI for Science at Exascale (BASE) grant.
+The original work (not this fork) was supported by the EPSRC grant,
+Blueprinting for AI for Science at Exascale (BASE-II, EP/X019918/1),
+which is Phase II of the Benchmarking for AI for Science at Exascale
+(BASE) grant.
 
  
