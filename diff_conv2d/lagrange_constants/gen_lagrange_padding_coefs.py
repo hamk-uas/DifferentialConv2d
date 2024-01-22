@@ -15,20 +15,23 @@ def lagrange_padding_coefs(N, s):
   A = hankel(y[0:N], y[N-1:N*2-1])  # Matrix of inputs to the prediction
   b = y[-N:]  # Prediction target vector
   c = mp.lu_solve(A, b)  # Least squares solve prediction coefficients
-  if np.max(np.abs(c)) > 9007199254740992.0:  # See https://stackoverflow.com/a/1848953/4770915
-    print ("Warning: Too large coefficient for datatype double")
   c_rounded = c.apply(mp.nint)
   if np.any(np.abs(c - c_rounded) > 0.0000000001):
-    print ("Warning: Dubious precision")
+    raise RuntimeError(f"Dubious precision in {np.abs(c - c_rounded)}")
+  residual = b - np.array(mp.matrix(A)*c_rounded)
+  if np.max(np.abs(residual)) > 0:
+    raise RuntimeError(f"Nonzero prediction residual {np.max(np.abs(residual))}")
+  if np.max(np.abs(np.array(c_rounded).astype(np.float64) - c_rounded)) > 0:
+    raise RuntimeError(f"Too large value {np.max(np.abs(c_rounded))} to be represented exactly as float64")
   return c_rounded # Round to integer
 
-M = 26 # Maximum kernel size
+M = 27 # Maximum kernel size
 
 c_list_list = []
 for N in range(1, M+1):
   c_list = []
   for s in range(1, (M+1)//2):
-    c_list.append(list(np.array(lagrange_padding_coefs(N, s), dtype=np.double)))
+    c_list.append(list(np.array(lagrange_padding_coefs(N, s), dtype=np.float64)))
   c_list_list.append(c_list)
 
 json_string = json.dumps(c_list_list).replace("]], [[", "]],\n [[").replace("], [", "],\n  [").replace("]]]", "]]\n]")
