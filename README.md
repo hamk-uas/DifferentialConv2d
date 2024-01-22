@@ -120,7 +120,7 @@ including data downloading, training and plotting.
 
 ## Acknowledgement
 
-The original work (not this fork) was supported by the EPSRC grant,
+The work for the original repo was supported by the EPSRC grant,
 Blueprinting for AI for Science at Exascale (BASE-II, EP/X019918/1),
 which is Phase II of the Benchmarking for AI for Science at Exascale
 (BASE) grant.
