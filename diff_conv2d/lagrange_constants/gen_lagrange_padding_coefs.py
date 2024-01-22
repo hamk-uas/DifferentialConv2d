@@ -27,14 +27,14 @@ def lagrange_padding_coefs(N, s):
 
 M = 27 # Maximum kernel size
 
-c_list_list = []
+c_matrix_list = []
 for N in range(1, M+1):
-  c_list = []
+  c_matrix = []
   for s in range(1, (M+1)//2):
-    c_list.append(list(np.array(lagrange_padding_coefs(N, s), dtype=np.float64)))
-  c_list_list.append(c_list)
+    c_matrix.append(list(np.array(lagrange_padding_coefs(N, s), dtype=np.float64)))
+  c_matrix_list.append(c_matrix)
 
-json_string = json.dumps(c_list_list).replace("]], [[", "]],\n [[").replace("], [", "],\n  [").replace("]]]", "]]\n]")
+json_string = json.dumps(c_matrix_list).replace("]], [[", "]],\n [[").replace("], [", "],\n  [").replace("]]]", "]]\n]")
 
 with open("lagrange_padding_coefs.json", "w") as out_file:
   out_file.write(json_string)
