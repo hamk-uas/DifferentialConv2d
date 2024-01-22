@@ -6,6 +6,8 @@ K. Leng and J. Thiyagalingam, Padding-free Convolution based on
 Preservation of Differential Characteristics of Kernels.
 ```
 
+This repository is intended for extending that work and for testing other convolutional layer border handling methods using the testing framework developed in of the eoriginal work.
+
 ## Installation
 
 **`PyTorch` is the only dependency for applications**. If you need a
