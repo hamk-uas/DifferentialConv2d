@@ -14,25 +14,32 @@ x_1 = 2  # Transformation to-coordinates
 
 # Sample kth first derivatives, 0 <= k < N, of polynomial x^(N - 1) at given x
 # Returned data has dimensions ("k", "x")
-def sample_poly_derivatives(N, x):
+def poly_derivatives(N, x):
     return np.vectorize(lambda k: mp.ff(N - 1, k))(np.arange(N)).reshape(N, 1)*x**np.flip(np.arange(N)).reshape(N, 1)
 
-# Calculation
-x = np.arange(N_x, dtype=mp.mpf)
-y = np.arange(N_y, dtype=mp.mpf)
-# Samples of kth first derivatives of polynomials x^(N_x - 1) and y^(N_y - 1) with dimensions ("k_x", "x") or ("k_y", "y")
-px_d = sample_poly_derivatives(N_x, x)
-py_d = sample_poly_derivatives(N_y, x)
-# Samples of kth first derivatives of 2-d polynomial x^(N_x - 1)y^(N_y - 1) with dimensions ("k_y", "k_x", "y", "x")
-pxy_d = px_d.reshape(1, N_x, 1, N_x)*py_d.reshape(N_y, 1, N_y, 1)
-# Flatten derivative order dimensions and flatten spatial dimensions
-pxy_d_flat = pxy_d.reshape(N_y*N_x, N_y*N_x)
-# Derivatives of 2-d polynomial at x_0, y_0
-px_0_d = sample_poly_derivatives(N_x, x_0)
-py_0_d = sample_poly_derivatives(N_y, y_0)
-pxy_0_d = px_0_d.reshape(1, N_x)*py_0_d.reshape(N_y, 1)
-pxy_0_d_flat = pxy_0_d.reshape(N_y, N_x, 1)
-#c = mp.lu_solve(pxy_d_flat, pxy_0_d_flat)
+pxy_flat_list = []
+pxy_0_d_flat_list = []
+for y_orig in mp.arange(N_x, N_x + N_y):
+  for x_orig in mp.arange(N_x):
+    # Polynomial values within the window
+    x = np.arange(x_orig, x_orig + N_x, dtype=mp.mpf)
+    y = np.arange(y_orig, y_orig + N_y, dtype=mp.mpf)
+    px = x**(N_x - 1)
+    py = y**(N_y - 1)
+    pxy = px.reshape(1, N_x)*py.reshape(N_y, 1)
+    pxy_flat = pxy.reshape(N_y*N_x)
+    pxy_flat_list.append(pxy_flat)
+    # Derivatives of 2-d polynomial at x_0, y_0 referenced to window origin
+    px_0_d = poly_derivatives(N_x, x_orig + x_0)
+    py_0_d = poly_derivatives(N_y, y_orig + y_0)
+    pxy_0_d = px_0_d.reshape(1, N_x)*py_0_d.reshape(N_y, 1)
+    pxy_0_d_flat = pxy_0_d.reshape(N_y*N_x)
+    pxy_0_d_flat_list.append(pxy_0_d_flat)
+
+pxy_flat = np.array(pxy_flat_list)
+pxy_0_d_flat = np.array(pxy_0_d_flat_list)
+
+mp.chop(mp.lu_solve(pxy_flat, pxy_0_d_flat[:,4]))
 
 #x = mp.arange(N)  # Sample positions (for x and y)
 #z = x**(N-1) # Data, a polynomial
