@@ -48,7 +48,7 @@ def diff_kernel(Ny, Nx, y_0, x_0):
   for k in range(N_x*N_y):
     c_list.append(mp.lu_solve(pxy_flat, pxy_0_d_flat[:,k]))
 
-  c = np.array(c_list, dtype=mp.mpf)
+  c = np.array(c_list)
   return c
 
 def print_matrix(c, name):
@@ -59,3 +59,15 @@ c_0 = diff_kernel(N_y, N_x, y_0, x_0)
 c_1 = diff_kernel(N_y, N_x, y_1, x_1)
 print_matrix(c_0, "c_0")
 print_matrix(c_1, "c_1")
+
+c_0_inv = np.array((mp.matrix(c_0)**-1).tolist())
+print_matrix(c_0_inv, "c_0_inv")
+
+transformation_matrix = np.array((mp.matrix(c_0_inv)*mp.matrix(c_1)).tolist())
+print_matrix(transformation_matrix, "transformation_matrix")
+
+kernel = np.ones((N_y, N_x))
+print_matrix(kernel, "kernel")
+
+transformed_kernel = np.array((mp.matrix(kernel.reshape((1, N_x*N_y)))*mp.matrix(transformation_matrix)).tolist()).reshape(N_y, N_x)
+print_matrix(transformed_kernel, "transformed kernel")
