@@ -27,16 +27,20 @@ def lagrange_padding_coefs(N, s):
     raise RuntimeError(f"Too large value {np.max(np.abs(c_rounded))} to be represented exactly as float64")
   return c_rounded
 
-M = 27 # Maximum kernel size
+M = 25 # Maximum kernel size
 
 c_matrix_list = []
 for N in range(1, M+1):
+  print(f"Solving coefficients for N = {N}")
   c_matrix = []
   for s in range(1, (M+1)//2):
     c_matrix.append(list(np.array(lagrange_padding_coefs(N, s), dtype=np.float64)))
+  c_matrix = np.transpose(c_matrix).tolist()
   c_matrix_list.append(c_matrix)
 
 json_string = json.dumps(c_matrix_list).replace("]], [[", "]],\n [[").replace("], [", "],\n  [").replace("]]]", "]]\n]")
 
-with open("lagrange_padding_coefs.json", "w") as out_file:
+out_filename = "lagrange_padding_coefs.json"
+with open(out_filename, "w") as out_file:
   out_file.write(json_string)
+print(f"Wrote {out_filename}")
