@@ -3,7 +3,9 @@ from scipy.linalg import hankel
 import mpmath as mp
 import json
 
-mp.mp.prec = 500  # Precision in bits
+# Solve Lagrange polynomial extrapolation coefficients
+
+mp.mp.prec = 250  # Precision in bits
 
 # Get coefficients for polynomial padding
 # N = Number of linear prediction coefficients
@@ -15,7 +17,7 @@ def lagrange_padding_coefs(N, s):
   A = hankel(y[0:N], y[N-1:N*2-1])  # Matrix of inputs to the prediction
   b = y[-N:]  # Prediction target vector
   c = mp.lu_solve(A, b)  # Least squares solve prediction coefficients
-  c_rounded = c.apply(mp.nint)
+  c_rounded = c.apply(mp.nint)  # Round to integer
   if np.any(np.abs(c - c_rounded) > 0.0000000001):
     raise RuntimeError(f"Dubious precision in {np.abs(c - c_rounded)}")
   residual = b - np.array(mp.matrix(A)*c_rounded)
@@ -23,7 +25,7 @@ def lagrange_padding_coefs(N, s):
     raise RuntimeError(f"Nonzero prediction residual {np.max(np.abs(residual))}")
   if np.max(np.abs(np.array(c_rounded).astype(np.float64) - c_rounded)) > 0:
     raise RuntimeError(f"Too large value {np.max(np.abs(c_rounded))} to be represented exactly as float64")
-  return c_rounded # Round to integer
+  return c_rounded
 
 M = 27 # Maximum kernel size
 
