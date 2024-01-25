@@ -14,9 +14,9 @@ def poly_derivatives(N, x):
 
 # Calculate assembled differential kernels spanning 0 <= y < N_y, 0 <= x < N_x that
 # correspond to the values of N_y*N_x earliest 2-d derivatives of polynomial data of y-degree N_y - 1 and x-degree N_x - 1
-# at y_0, x_0. We use the sign convention corresponding to multiplying an input data window with a kernel.
+# at y_0, x_0. We use the coordinate sign convention corresponding to multiplying an input data window with a kernel.
 def diff_kernel(N_y, N_x, y_0, x_0):
-  # Collect enough example windws of polynomial data to ensure unique solution
+  # Collect enough example windows of polynomial data to ensure unique solution
   pyx_flat_list = []
   pyx_0_d_flat_list = []
   for y_orig in mp.arange(N_y):
@@ -46,7 +46,7 @@ def diff_kernel(N_y, N_x, y_0, x_0):
   c = np.array(c_list)
   return c
 
-# Running this python file will in stand-alone fashion will generate transformation matrix files
+# Running this python file in stand-alone fashion will generate transformation matrix files
 if __name__ == "__main__":
 
   # Generate kernel transformation matrixes for this shared range of kernel height and width
