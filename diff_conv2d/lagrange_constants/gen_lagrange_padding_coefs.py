@@ -35,7 +35,7 @@ for N in range(1, M+1):
   c_matrix = []
   for s in range(1, (M+1)//2):
     c_matrix.append(list(np.array(lagrange_padding_coefs(N, s), dtype=np.float64)))
-  c_matrix = np.transpose(c_matrix).tolist()
+  # c_matrix = np.transpose(c_matrix).tolist()
   c_matrix_list.append(c_matrix)
 
 json_string = json.dumps(c_matrix_list).replace("]], [[", "]],\n [[").replace("], [", "],\n  [").replace("]]]", "]]\n]")
