@@ -50,8 +50,8 @@ def diff_kernel(N_y, N_x, y_0, x_0):
 if __name__ == "__main__":
 
   # Generate kernel transformation matrixes for this shared range of kernel height and width
-  min_N = 2
-  max_N = 6
+  min_N = 1
+  max_N = 7
   
   # Symmetric only?
   symmetric_only = True
@@ -61,6 +61,7 @@ if __name__ == "__main__":
     for N_x in range(min_N, max_N + 1):
       if symmetric_only and N_x != N_y:
         continue
+      print(f"Solving kernel size {N_y}x{N_x}")
       x_0 = (N_x - 1)/2
       c_0 = diff_kernel(N_y, N_x, y_0, x_0)
       c_0_inv = np.array((mp.matrix(c_0)**-1).tolist())
