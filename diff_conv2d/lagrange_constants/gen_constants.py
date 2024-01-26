@@ -19,14 +19,14 @@ def diff_kernel(N_y, N_x, y_0, x_0):
   # Collect enough example windows of polynomial data to ensure unique solution
   pyx_flat_list = []
   pyx_0_d_flat_list = []
-  for y_orig in mp.arange(N_y):
-    for x_orig in mp.arange(N_x):
+  x = np.arange(N_x*2 - 1, dtype=mp.mpf)
+  y = np.arange(N_y*2 - 1, dtype=mp.mpf)
+  py = y**(N_y - 1)
+  px = x**(N_x - 1)
+  for y_orig in range(N_y):
+    for x_orig in range(N_x):
       # Polynomial values within the window
-      x = np.arange(x_orig, x_orig + N_x, dtype=mp.mpf)
-      y = np.arange(y_orig, y_orig + N_y, dtype=mp.mpf)
-      py = y**(N_y - 1)
-      px = x**(N_x - 1)
-      pyx = py.reshape(N_y, 1)*px.reshape(1, N_x)
+      pyx = py[y_orig:y_orig + N_y].reshape(N_y, 1)*px[x_orig:x_orig + N_x].reshape(1, N_x)
       pyx_flat = pyx.reshape(N_y*N_x)
       pyx_flat_list.append(pyx_flat)
       # Derivatives of 2-d polynomial at y_orig + y_0, x_orig + x_0 with window top left corner at y_orig, x_orig
@@ -86,7 +86,7 @@ if __name__ == "__main__":
           transformation_matrix_list.append(transformation_matrix.tolist())
         transformation_matrix_matrix.append(transformation_matrix_list)
       out_filename = f"kernel_transformation_matrix_{N_y}x{N_x}.json"
-      with open(out_filename, "w") as out_file:
-        json_str = json.dumps(transformation_matrix_matrix)
+      json_str = json.dumps(transformation_matrix_matrix)
+      with open(out_filename, "w") as out_file:      
         out_file.write(json_str)
       print(f"Wrote {out_filename}")
