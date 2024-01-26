@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
   # Generate kernel transformation matrixes for this shared range of kernel height and width
   min_N = 1
-  max_N = 7
+  max_N = 10
   
   # Symmetric only?
   symmetric_only = True
@@ -66,9 +66,9 @@ if __name__ == "__main__":
       c_0 = diff_kernel(N_y, N_x, y_0, x_0)
       c_0_inv = np.array((mp.matrix(c_0)**-1).tolist())
       transformation_matrix_matrix = []
-      for y_1 in list(-0.5*(N_y%2 == 0) + y_0 + np.arange(-(N_y - 1)/2, (N_y - 1)/2 + 1 + (N_y%2 == 0))):
+      for y_1 in list(y_0 + np.arange(-(N_y - 1)//2, N_y//2 + 1)):
         transformation_matrix_list = []
-        for x_1 in list(-0.5*(N_x%2 == 0) + x_0 + np.arange(-(N_x - 1)/2, (N_x - 1)/2 + 1 + (N_x%2 == 0))):
+        for x_1 in list(y_0 + np.arange(-(N_x - 1)//2, N_x//2 + 1)):
           print(f"Solving kernel size {N_y}x{N_x}, diff operator shift ({y_1-y_0}, {x_1-x_0}).")
           c_1 = diff_kernel(N_y, N_x, y_1, x_1)
           transformation_matrix = mp.matrix(c_0_inv)*mp.matrix(c_1)
