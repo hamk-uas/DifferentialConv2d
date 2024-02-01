@@ -35,6 +35,14 @@ _precomputed_T_matrices = {
     for ksize in [3, 5, 7]
 }
 
+#def _read_tensor_list_json(fname):
+#    with open(fname) as f:
+#        tensor_list = json.load(fname)
+#
+#_precomputed_lagrange_padding_coefs = map(
+#    lambda elem: torch.tensor(elem, dtype=torch.float64),
+#    eval(f.read(f"{Path(__file__).parent.absolute()}/"f"lagrange_constants/lagrange_padding_coefs.json"))
+#)
 
 def map_displacement_to_valid(H, W, gap, dtype=int, device='cpu'):
     """

@@ -5,7 +5,6 @@ from scipy.interpolate import interp1d
 from diff_conv2d.functional import DiffConv2d
 from diff_conv2d.maths import map_displacement_to_valid
 
-
 def conv2d_padding(image, kernel, padding_mode='constant',
                    ignore_padding=False):
     """ padding-based conv2d methods """
@@ -36,7 +35,6 @@ def conv2d_part(image, kernel):
     # scale result by r
     z *= r[None, None, :, :]
     return z
-
 
 def conv2d_extrap(image, kernel, returns_padded=False):
     """ extrapolation-based conv2d methods """

@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
   # Generate kernel transformation matrixes for this shared range of kernel height and width
   min_N = 1
-  max_N = 10
+  max_N = 11
   
   # Symmetric only?
   symmetric_only = True
