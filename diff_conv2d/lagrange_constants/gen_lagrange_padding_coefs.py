@@ -27,7 +27,7 @@ def lagrange_padding_coefs(N, s):
     raise RuntimeError(f"Too large value {np.max(np.abs(c_rounded))} to be represented exactly as float64")
   return c_rounded
 
-M = 25 # Maximum kernel size
+M = 27 # Maximum kernel size
 
 c_matrix_list = []
 for N in range(1, M+1):
